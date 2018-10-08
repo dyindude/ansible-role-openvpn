@@ -1,0 +1,58 @@
+port {{ openvpn_port }}
+proto {{ openvpn_proto }}
+dev {{ openvpn_dev }}
+{% if openvpn_ca_cert is defined -%}
+<ca>
+{{ openvpn_ca_cert }}
+</ca>
+{% endif %}
+{% if openvpn_cert is defined -%}
+<cert>
+{{ openvpn_cert }}
+</cert>
+{% endif %}
+{% if openvpn_key is defined -%}
+<key>
+{{ openvpn_key }}
+</key>
+{% endif %}
+{% if openvpn_dh is defined -%}
+<dh>
+{{ openvpn_dh }}
+</dh>
+{% endif %}
+{% if openvpn_ta is defined -%}
+<ta>
+{{ openvpn_ta }}
+</ta>
+key-direction {{ openvpn_key_direction }}
+{% endif %}
+remote-cert-eku "TLS Web {{ openvpn_role | title }} Authentication"
+topology {{ openvpn_topology }}
+{% if openvpn_network and openvpn_role == 'server' -%}
+server {{ openvpn_network }}
+{% else %}
+client
+{% endif %}
+ifconfig-pool-persist ipp.txt
+{% if openvpn_push is defined -%}
+{% for push in openvpn_push -%}
+push "{{ push }}"
+{% endfor %}
+{% endif %}
+keepalive {{ openvpn_keepalive }}
+cipher {{ openvpn_cipher }}
+tls-cipher {{ openvpn_tls_cipher }}
+tls-version-min {{ openvpn_tls_version_min }}
+auth {{ openvpn_auth }}
+compress {{ openvpn_compress }}
+push "compress {{ openvpn_compress }}"
+{% if openvpn_max_clients is defined -%}
+max-clients {{ openvpn_max_clients }}
+{% endif %}
+user {{ openvpn_user }}
+group {{ openvpn_user }}
+persist-key
+persist-tun
+status openvpn-status.log
+verb 3

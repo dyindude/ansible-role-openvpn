@@ -1,0 +1,14 @@
+---
+- name: ensure openvpn package is installed
+  package:
+    name: openvpn
+    state: latest
+#- name: install/copy our keys
+- name: install openvpn configuration
+  template:
+    src: openvpn.j2
+    dest: /etc/openvpn/openvpn.conf
+    owner: root
+    group: root
+    mode: 0600
+#- name: ensure openvpn service is running (server)

@@ -1,0 +1,15 @@
+---
+# defaults file for dyindude.openvpn
+openvpn_role: server
+openvpn_key_direction: "{{ (openvpn_role == 'server') | ternary(0,1) }}"
+openvpn_port: 443
+openvpn_proto: tcp
+openvpn_dev: tun
+openvpn_topology: subnet
+openvpn_keepalive: "10 120"
+openvpn_cipher: AES-256-CBC
+openvpn_tls_cipher: TLS-DHE-RSA-WITH-AES-256-GCM-SHA384
+openvpn_compress: lz4-v2
+openvpn_user: nobody
+openvpn_tls_version_min: 1.2
+openvpn_auth: SHA256
